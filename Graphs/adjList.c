@@ -6,6 +6,7 @@ using namespace std;
 
 class Graph {
   int V;
+
   vector<int> *adj;
 
   void DFSUtil(int v, bool visited[]);
@@ -16,22 +17,28 @@ class Graph {
      // function to add an edge to graph
      void addEdge(int v, int w);
 
+
      // prints BFS traversal from a given source s
      void BFS(int s);
-     
+
      void DFS(int s);
+
+
 
 };
 
 Graph::Graph(int v) {
   V = v;
   adj = new vector<int>[V];
-
 }
 
 void Graph::addEdge(int v, int w) {
   adj[v].push_back(w);
+  adj[w].push_back(v);
 }
+
+
+
 
 void Graph::BFS(int s)
 {
@@ -48,7 +55,7 @@ void Graph::BFS(int s)
       node = q.front();
       cout << node << " ";
       q.pop();
-     
+
       for (auto i: adj[node]) {
         if (visited[i] == 0) {
              q.push(i);
@@ -61,7 +68,7 @@ void Graph::BFS(int s)
 }
 
 void Graph::DFSUtil(int v, bool visited[]) {
-   
+
    cout << v << " " << endl;
    visited[v] = 1;
    for (auto i :adj[v]) {
@@ -69,15 +76,14 @@ void Graph::DFSUtil(int v, bool visited[]) {
            DFSUtil(i,visited);
        }
    }
-   
 }
+
 void Graph::DFS(int s) {
    bool visited[V];
 
    for (int i = 0; i < V; i++) {
         visited[i] = 0;
    }
-
 
    DFSUtil(s, visited);
 }
@@ -99,7 +105,7 @@ int main()
     g.BFS(2);
     cout << endl;
     cout << "Following is Depth First Traversal"
-            " (starting from vertex 2) \n"; 
+            " (starting from vertex 2) \n";
     g.DFS(2);
     return 0;
-}   
+}

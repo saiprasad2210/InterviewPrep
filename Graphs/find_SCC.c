@@ -33,13 +33,13 @@ void Graph::DFSUtil(int v, bool visited[], bool is_rev) {
    }
 
 }
+
 void Graph::DFS(int s, bool is_rev) {
    bool visited[V];
 
    for (int i = 0; i < V; i++) {
         visited[i] = 0;
    }
-
 
    DFSUtil(s, visited,is_rev);
 }
