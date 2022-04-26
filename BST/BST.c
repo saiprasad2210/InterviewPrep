@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <stack>
 #include <stdlib.h>
 
 using namespace std;
@@ -50,6 +51,12 @@ class BST {
       void inorder(Node *r);
       void inorder(void);
 
+      void inorder_it(void);
+      void inorder_it(Node *r);
+
+      void preorder_it(void);
+      void preorder_it(Node *r);
+
       Node* min(void);
       Node* min(Node *root);
 
@@ -76,6 +83,8 @@ class BST {
       int floor(int key);
       void floor(Node *r, int key, int &flr);
 
+      int ceil(int key);
+      Node* ceil(Node *r, int key);
 
       Node* deleteMin(Node * root);
       Node* deleteMin(void);
@@ -219,6 +228,37 @@ int BST::floor(int key) {
 
      return flr;
 }
+
+Node* BST::ceil(Node *r, int key) {
+   
+    if (!r) {
+        return NULL;
+    } 
+
+    if (key == r->key) {
+        return r;
+    } else if (key > r->key) {
+        return ceil(r->right,key);
+    } else {
+        Node *t = ceil(r->left,key);
+        if (t != NULL) {
+            return t;
+        }
+        return r;
+    }
+        
+}
+int BST::ceil(int key) {
+
+    Node *t = ceil(root, key);
+
+    if (t != NULL) {
+        return t->key;
+    }
+
+    return -1;
+}
+
 
 int BST::count(Node *root) {
 
@@ -455,9 +495,58 @@ void BST::inorder(Node *r) {
 
 void BST::inorder(void) {
     inorder(root);
+    cout << endl;
 }
 
 
+void BST::inorder_it() {
+     inorder_it(root);
+     cout << endl;
+}
+
+void BST::inorder_it(Node *root) {
+
+    stack<Node*> stk;
+
+    do {
+         while (root != NULL) {
+             stk.push(root);
+             root = root->left;
+         }
+
+         Node *r = stk.top();
+         stk.pop();
+         cout << r->key << " ";
+
+         root = r->right;         
+      
+    } while (root || !stk.empty());
+}
+
+void BST::preorder_it() {
+     preorder_it(root);
+     cout << endl;
+}
+
+void BST::preorder_it(Node *root) {
+
+    stack<Node*> stk;
+
+    do {
+         while (root != NULL) {
+             cout << root->key << " ";
+             stk.push(root);
+             root = root->left;
+         }
+
+         Node *r = stk.top();
+         stk.pop();
+         
+
+         root = r->right;
+
+    } while (root || !stk.empty());
+}
 
 int main(int argc, char *argv[]) {
     BST bst = BST();
@@ -470,7 +559,8 @@ int main(int argc, char *argv[]) {
     bst.insert(6,66);
     bst.insert(9,99);
 
-    bst.inorder();
+    bst.inorder_it();
+    bst.preorder_it();
 
     BST *b = new BST();
     b->insert(50,100);
@@ -480,7 +570,6 @@ int main(int argc, char *argv[]) {
 
     cout << bst.get(9) << " " << bst.get(4) << endl;
 
-    b->inorder();
 
     cout << bst.min()->key << " " << bst.max()->val << endl;
 

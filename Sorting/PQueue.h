@@ -80,15 +80,42 @@ class PQueue : public SortAlgo<T>
          return top;
       }
 
-      
+      void deleteNode(int i) {
+        T itm = PQ[i];
+     
+        SortAlgo<T>::exch(PQ[i],PQ[N--]);
+
+        if (i != 1 && SortAlgo<T>::less(PQ[i/2], PQ[i], compareTo)) {
+            swim(i);
+        } else {
+            sink(i);
+        }
+      }
+     
+      int search(T key, int i) {
+          if (size() == 0 || i > N) {
+              return 0;
+          }
+
+          if (PQ[i] == key) {
+              return i;
+          }
+
+          int lft = search(key , 2 * i);
+          int rgt = search(key , 2 * i + 1);
+          if (lft) {
+              return lft;
+          } else {
+              return rgt;
+          }
+      }
+
       void show() {
           for (int i =1; i <= N; i++) {
               cout << PQ[i] << " ";
           }
-
           cout << endl;
       }
-
 
 };
 
